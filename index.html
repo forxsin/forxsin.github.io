@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张夏男 · 策略运营</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #F8F7F4;
+      --card-radius: 24px;
+      --card-radius-sm: 16px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.04), 0 6px 24px rgba(0,0,0,0.06);
+      --shadow-hover: 0 4px 12px rgba(0,0,0,0.06), 0 16px 48px rgba(0,0,0,0.10);
+      --accent-blue: #2D7AF6;
+      --accent-orange: #FF6B35;
+      --accent-green: #22C55E;
+      --accent-purple: #A855F7;
+      --text-primary: #1A1A1A;
+      --text-secondary: #6B6B6B;
+      --text-tertiary: #A0A0A0;
+      --border: rgba(0,0,0,0.07);
+      --divider: rgba(0,0,0,0.06);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', 'Inter', -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text-primary);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    ::selection { background: #2D7AF6; color: white; }
+
+    /* ===== HERO ===== */
+    .hero {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 100px 48px 80px;
+      text-align: center;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent-blue);
+      background: rgba(45,122,246,0.08);
+      padding: 6px 14px;
+      border-radius: 20px;
+      margin-bottom: 28px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      line-height: 1.15;
+      margin-bottom: 20px;
+      color: var(--text-primary);
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.1s forwards;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--text-primary);
+    }
+
+    .hero-desc {
+      font-size: clamp(15px, 2vw, 17px);
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.8;
+      max-width: 600px;
+      margin: 0 auto 40px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+
+    .hero-contact {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+
+    .contact-sep { color: var(--text-tertiary); font-size: 13px; }
+
+    .contact-item {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 400;
+    }
+
+    /* ===== PROJECTS ===== */
+    .projects-section {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 48px 120px;
+    }
+
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    /* ===== CARD ===== */
+    .card {
+      background: white;
+      border-radius: var(--card-radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      cursor: pointer;
+      transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+      opacity: 0;
+      animation: fadeUp 0.8s ease forwards;
+      position: relative;
+    }
+
+    .card:nth-child(1) { animation-delay: 0.15s; }
+    .card:nth-child(2) { animation-delay: 0.30s; }
+
+    .card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    /* Card accent stripe */
+    .card-stripe {
+      height: 4px;
+      width: 100%;
+    }
+
+    .card[data-type="portfolio"] .card-stripe {
+      background: linear-gradient(90deg, #FF6B35, #FF9F0A);
+    }
+
+    .card[data-type="ai"] .card-stripe {
+      background: linear-gradient(90deg, #2D7AF6, #A855F7);
+    }
+
+    .card-thumb-wrap {
+      padding: 28px 28px 0;
+      overflow: hidden;
+    }
+
+    .card-thumb {
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      border-radius: var(--card-radius-sm);
+      overflow: hidden;
+      box-shadow: 0 2px 16px rgba(0,0,0,0.10);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    /* AI Tool card preview */
+    .thumb-ai {
+      background: linear-gradient(145deg, #EFF6FF, #F5F3FF);
+    }
+
+    .thumb-ai-inner {
+      width: 100%;
+      height: 100%;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .thumb-ai-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+
+    .thumb-ai-dots {
+      display: flex;
+      gap: 4px;
+    }
+
+    .thumb-ai-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .thumb-ai-dot:nth-child(1) { background: #FF5F57; }
+    .thumb-ai-dot:nth-child(2) { background: #FEBC2E; }
+    .thumb-ai-dot:nth-child(3) { background: #28C840; }
+
+    .thumb-ai-title {
+      font-size: 10px;
+      font-weight: 600;
+      color: #93C5FD;
+      letter-spacing: 0.5px;
+    }
+
+    .thumb-ai-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .thumb-ai-sidebar {
+      background: rgba(45,122,246,0.06);
+      border-radius: 8px;
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .thumb-ai-nav-item {
+      height: 8px;
+      border-radius: 4px;
+      background: rgba(45,122,246,0.12);
+    }
+
+    .thumb-ai-nav-item.active {
+      background: rgba(45,122,246,0.35);
+      width: 70%;
+    }
+
+    .thumb-ai-content {
+      grid-column: span 2;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .thumb-ai-welcome {
+      background: linear-gradient(135deg, #DBEAFE, #E0E7FF);
+      border-radius: 8px;
+      height: 36px;
+    }
+
+    .thumb-ai-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .thumb-ai-block {
+      background: rgba(45,122,246,0.07);
+      border-radius: 8px;
+    }
+
+    /* Portfolio card preview */
+    .thumb-portfolio {
+      background: linear-gradient(145deg, #FFF7ED, #F0F9FF);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .thumb-portfolio::before {
+      content: '';
+      position: absolute;
+      top: -30px;
+      right: -30px;
+      width: 200px;
+      height: 200px;
+      border-radius: 50%;
+      background: rgba(255,107,53,0.08);
+    }
+
+    .thumb-portfolio::after {
+      content: '';
+      position: absolute;
+      bottom: -40px;
+      left: -20px;
+      width: 160px;
+      height: 160px;
+      border-radius: 50%;
+      background: rgba(255,159,10,0.07);
+    }
+
+    .thumb-portfolio-inner {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .thumb-portfolio-topbar {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .thumb-portfolio-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+    }
+
+    .thumb-portfolio-dot:nth-child(1) { background: #FF6B35; }
+    .thumb-portfolio-dot:nth-child(2) { background: #FF9F0A; }
+    .thumb-portfolio-dot:nth-child(3) { background: #A855F7; }
+
+    .thumb-portfolio-intro {
+      background: rgba(255,107,53,0.07);
+      border-radius: 10px;
+      height: 28px;
+      margin-bottom: 10px;
+    }
+
+    .thumb-portfolio-tags {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 10px;
+    }
+
+    .thumb-portfolio-tag {
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 9px;
+      font-weight: 500;
+    }
+
+    .thumb-portfolio-tag:nth-child(1) { background: rgba(255,107,53,0.12); color: #EA580C; }
+    .thumb-portfolio-tag:nth-child(2) { background: rgba(168,85,247,0.12); color: #7C3AED; }
+    .thumb-portfolio-tag:nth-child(3) { background: rgba(45,122,246,0.12); color: #2563EB; }
+    .thumb-portfolio-tag:nth-child(4) { background: rgba(34,197,94,0.12); color: #16A34A; }
+
+    .thumb-portfolio-section {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex: 1;
+    }
+
+    .thumb-portfolio-row {
+      height: 8px;
+      background: rgba(0,0,0,0.05);
+      border-radius: 4px;
+    }
+
+    .thumb-portfolio-row:nth-child(1) { width: 55%; }
+    .thumb-portfolio-row:nth-child(2) { width: 80%; }
+    .thumb-portfolio-row:nth-child(3) { width: 40%; }
+
+    /* Card body */
+    .card-body {
+      padding: 24px 28px 28px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .card-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: var(--text-tertiary);
+      font-family: 'Inter', sans-serif;
+    }
+
+    .card-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 20px;
+    }
+
+    .card[data-type="ai"] .card-badge {
+      background: rgba(45,122,246,0.1);
+      color: var(--accent-blue);
+    }
+
+    .card[data-type="portfolio"] .card-badge {
+      background: rgba(255,107,53,0.1);
+      color: var(--accent-orange);
+    }
+
+    .card-badge svg { width: 10px; height: 10px; }
+
+    .card h2 {
+      font-size: clamp(18px, 2.2vw, 22px);
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin-bottom: 8px;
+      color: var(--text-primary);
+    }
+
+    .card-subtitle {
+      font-size: 13px;
+      color: var(--text-secondary);
+      font-weight: 400;
+      line-height: 1.5;
+      margin-bottom: 18px;
+    }
+
+    .card-desc {
+      font-size: 13px;
+      color: var(--text-tertiary);
+      line-height: 1.7;
+      font-weight: 400;
+      margin-bottom: 14px;
+    }
+
+    /* In-card thumbnail (placed below subtitle) */
+    .card-thumb-inline {
+      width: 100%;
+      aspect-ratio: 16 / 6;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.4s ease;
+    }
+
+    .card:hover .card-thumb-inline {
+      transform: scale(1.02);
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 22px;
+    }
+
+    .card-tag {
+      font-size: 11px;
+      font-weight: 500;
+      padding: 4px 12px;
+      border-radius: 20px;
+      background: rgba(0,0,0,0.04);
+      color: var(--text-secondary);
+      border: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .card-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 18px;
+      border-top: 1px solid var(--divider);
+    }
+
+    .card-value-list {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .card-value-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--text-secondary);
+    }
+
+    .card-value-item::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .card[data-type="ai"] .card-value-item::before { background: var(--accent-blue); }
+    .card[data-type="portfolio"] .card-value-item::before { background: var(--accent-orange); }
+
+    .card-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--accent-blue);
+      text-decoration: none;
+      transition: all 0.2s;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1.5px solid rgba(45,122,246,0.2);
+      background: rgba(45,122,246,0.04);
+    }
+
+    .card[data-type="portfolio"] .card-cta {
+      color: var(--accent-orange);
+      border-color: rgba(255,107,53,0.2);
+      background: rgba(255,107,53,0.04);
+    }
+
+    .card:hover .card-cta {
+      background: rgba(45,122,246,0.08);
+      border-color: rgba(45,122,246,0.4);
+    }
+
+    .card[data-type="portfolio"]:hover .card-cta {
+      background: rgba(255,107,53,0.08);
+      border-color: rgba(255,107,53,0.4);
+    }
+
+    .card-cta-arrow {
+      transition: transform 0.3s;
+      font-size: 14px;
+    }
+
+    .card:hover .card-cta-arrow {
+      transform: translateX(3px);
+    }
+
+    /* ===== FOOTER ===== */
+    footer {
+      border-top: 1px solid var(--divider);
+      padding: 36px 48px;
+      text-align: center;
+    }
+
+    .footer-text {
+      font-size: 12.5px;
+      color: var(--text-tertiary);
+      font-weight: 400;
+    }
+
+    .footer-contact {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .footer-sep { color: var(--text-tertiary); font-size: 12px; }
+    .footer-contact-item { font-size: 12px; color: var(--text-secondary); }
+
+    /* ===== ANIMATIONS ===== */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 860px) {
+      .hero { padding: 60px 20px 50px; }
+      .projects-section { padding: 0 20px 80px; }
+      footer { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+      <circle cx="6" cy="6" r="5" stroke="#2D7AF6" stroke-width="1.5"/>
+      <path d="M6 3.5V6.5L7.5 7.5" stroke="#2D7AF6" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+    互联网教育 · 策略运营
+  </div>
+  <h1>张夏男 · <em>策略运营</em></h1>
+  <p class="hero-desc">策略运营能力作品集展示网站，包含2个核心模块：</p>
+  <div class="hero-desc" style="margin-top:-16px; margin-bottom:32px; font-size:15px;">
+    总结工作能力的个人作品集<br>
+    独立搭建的 AI 物料管理平台
+  </div>
+  <div class="hero-contact">
+    <span class="contact-item">178-6521-7547</span>
+    <span class="contact-sep">·</span>
+    <span class="contact-item">forxsin@gmail.com</span>
+    <span class="contact-sep">·</span>
+    <span class="contact-item">微信同号</span>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section class="projects-section">
+
+  <div class="projects-grid">
+
+    <!-- CARD 1: 个人作品集 (左边) -->
+    <a href="personal-portfolio/portfolio.html" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;outline:none;" id="project-portfolio">
+      <div class="card" data-type="portfolio">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">01</span>
+            <span class="card-badge">
+              <svg viewBox="0 0 10 10" fill="none"><path d="M5 1L6.5 4H9L6.8 6L7.8 9L5 7.2L2.2 9L3.2 6L1 4H3.5L5 1Z" fill="currentColor"/></svg>
+              个人作品集
+            </span>
+          </div>
+          <h2>策略运营能力作品集</h2>
+          <p class="card-subtitle">真实案例展示完整工作能力图谱</p>
+
+          <!-- 缩略图：副标题下方 -->
+          <div class="card-thumb-inline thumb-portfolio">
+            <div class="thumb-portfolio-inner">
+              <div class="thumb-portfolio-topbar">
+                <div class="thumb-portfolio-dot"></div>
+                <div class="thumb-portfolio-dot"></div>
+                <div class="thumb-portfolio-dot"></div>
+              </div>
+              <div class="thumb-portfolio-tags">
+                <span class="thumb-portfolio-tag">用户洞察</span>
+                <span class="thumb-portfolio-tag">转化策略</span>
+                <span class="thumb-portfolio-tag">销售赋能</span>
+                <span class="thumb-portfolio-tag">数据复盘</span>
+              </div>
+              <div class="thumb-portfolio-section">
+                <div class="thumb-portfolio-row"></div>
+                <div class="thumb-portfolio-row"></div>
+                <div class="thumb-portfolio-row"></div>
+              </div>
+            </div>
+          </div>
+
+          <p class="card-desc">基于工作经历沉淀的个人作品集网站，按照策略运营核心能力维度组织，每个模块配有真实案例、数据成果。</p>
+          <div class="card-tags">
+            <span class="card-tag">用户洞察</span>
+            <span class="card-tag">竞品调研</span>
+            <span class="card-tag">转化策略</span>
+            <span class="card-tag">销售赋能</span>
+            <span class="card-tag">数据复盘</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-value-list">
+              <div class="card-value-item">6 大策略维度覆盖</div>
+              <div class="card-value-item">真实案例 + 数据成果</div>
+            </div>
+            <div class="card-cta">
+              访问
+              <span class="card-cta-arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+    <!-- CARD 2: AI 提效工具 (右边) -->
+    <a href="AI-material-management-platform/index.html" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;display:block;outline:none;" id="project-ai">
+      <div class="card" data-type="ai">
+        <div class="card-stripe"></div>
+        <div class="card-body">
+          <div class="card-meta">
+            <span class="card-num">02</span>
+            <span class="card-badge">
+              <svg viewBox="0 0 10 10" fill="none"><path d="M5 1L6.5 4H9L6.8 6L7.8 9L5 7.2L2.2 9L3.2 6L1 4H3.5L5 1Z" fill="currentColor"/></svg>
+              AI 提效工具
+            </span>
+          </div>
+          <h2>全周期物料管理平台</h2>
+          <p class="card-subtitle">用 AI 搭建的"一站式"物料中台，让销售在 10 秒内找到所需</p>
+
+          <!-- 缩略图：副标题下方 -->
+          <div class="card-thumb-inline thumb-ai">
+            <div class="thumb-ai-inner">
+              <div class="thumb-ai-header">
+                <div class="thumb-ai-dots">
+                  <div class="thumb-ai-dot"></div>
+                  <div class="thumb-ai-dot"></div>
+                  <div class="thumb-ai-dot"></div>
+                </div>
+                <span class="thumb-ai-title">小升初项目全周期物料管理系统</span>
+              </div>
+              <div class="thumb-ai-body">
+                <div class="thumb-ai-sidebar">
+                  <div class="thumb-ai-nav-item active"></div>
+                  <div class="thumb-ai-nav-item"></div>
+                  <div class="thumb-ai-nav-item"></div>
+                  <div class="thumb-ai-nav-item"></div>
+                </div>
+                <div class="thumb-ai-content">
+                  <div class="thumb-ai-welcome"></div>
+                  <div class="thumb-ai-grid">
+                    <div class="thumb-ai-block"></div>
+                    <div class="thumb-ai-block"></div>
+                    <div class="thumb-ai-block" style="grid-column:span 2"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <p class="card-desc">基于对 AI Agent 的理解与调用，独立搭建了覆盖"用户进线"到"转化关单"全链路关键节点的物料管理系统，系统化整合销售所需内容。</p>
+          <div class="card-tags">
+            <span class="card-tag">AI Agent 调用</span>
+            <span class="card-tag">物料中台搭建</span>
+            <span class="card-tag">全链路覆盖</span>
+            <span class="card-tag">话术库 + SOP</span>
+          </div>
+          <div class="card-footer">
+            <div class="card-value-list">
+              <div class="card-value-item">物料查找时间大幅缩短</div>
+              <div class="card-value-item">独立搭建效率工具经验</div>
+            </div>
+            <div class="card-cta">
+              访问
+              <span class="card-cta-arrow">→</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-text">张夏男 · 策略运营</div>
+  <div class="footer-contact">
+    <span class="footer-contact-item">178-6521-7547</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-contact-item">forxsin@gmail.com</span>
+    <span class="footer-sep">·</span>
+    <span class="footer-contact-item">微信同号</span>
+  </div>
+</footer>
+
+<script>
+    window.onload = function() { window.scrollTo(0, 0); };
+    if (document.readyState === 'complete' || document.readyState !== 'loading') {
+        window.scrollTo(0, 0);
+    }
+</script>
+</body>
+</html>

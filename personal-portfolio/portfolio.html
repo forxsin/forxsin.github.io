@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>张夏男 · 策略运营作品集</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg: #f0eff9;
+      --card-bg: #ffffff;
+      --accent: #3b82f6;
+      --accent2: #ff6b35;
+      --accent3: #22c55e;
+      --accent-purple: #a855f7;
+      --badge-bg: rgba(59,130,246,0.07);
+      --badge-border: rgba(59,130,246,0.18);
+      --badge-text: #3b82f6;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Noto Sans SC', -apple-system, sans-serif;
+      background: var(--bg);
+      color: #1d1d1f;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ══ SIDEBAR ══ */
+    .sidebar {
+      position: fixed;
+      right: 28px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      z-index: 100;
+    }
+
+    .sidebar-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      justify-content: flex-end;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .sidebar-label {
+      font-size: 11px;
+      color: rgba(26,26,46,0.35);
+      font-weight: 400;
+      opacity: 0;
+      transform: translateX(6px);
+      transition: opacity 0.3s, transform 0.3s, color 0.3s;
+      white-space: normal;
+      text-align: right;
+      line-height: 1.3;
+      max-width: 150px;
+    }
+
+    .sidebar-item:hover .sidebar-label,
+    .sidebar-item.active .sidebar-label {
+      opacity: 1;
+      transform: translateX(0);
+      color: rgba(26,26,46,0.6);
+    }
+
+    .sidebar-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(26,26,46,0.2);
+      transition: background 0.3s, transform 0.3s;
+      flex-shrink: 0;
+    }
+
+    .sidebar-item.active .sidebar-dot {
+      background: var(--accent);
+      transform: scale(1.4);
+    }
+
+    /* ══ HEADER ══ */
+    header {
+      min-height: unset;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 64px 24px 52px;
+      position: relative;
+      background: linear-gradient(160deg, #ecebff 0%, #f0eff9 40%);
+    }
+
+    .header-tag {
+      font-size: 11px;
+      font-weight: 500;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.1s forwards;
+    }
+
+    header h1 {
+      font-size: clamp(20px, 3.5vw, 28px);
+      font-weight: 700;
+      letter-spacing: -0.4px;
+      line-height: 1.2;
+      margin-bottom: 10px;
+      color: #1a1a2e;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.2s forwards;
+    }
+
+    .header-sub {
+      font-size: clamp(12px, 1.8vw, 14px);
+      color: rgba(26,26,46,0.45);
+      font-weight: 400;
+      margin-bottom: 26px;
+      letter-spacing: 0.5px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.3s forwards;
+    }
+
+    .contact-row {
+      display: flex;
+      gap: 22px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 18px;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.4s forwards;
+    }
+
+    .contact-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12.5px;
+      color: rgba(26,26,46,0.42);
+    }
+
+    .contact-item svg { width: 13px; height: 13px; opacity: 0.45; }
+
+    .header-intro {
+      font-size: 12.5px;
+      color: rgba(26,26,46,0.38);
+      font-weight: 300;
+      max-width: 500px;
+      line-height: 1.7;
+      margin: 0 auto;
+      opacity: 0;
+      animation: fadeUp 0.7s ease 0.5s forwards;
+    }
+
+    /* ══ SECTION ══ */
+    .section-wrap {
+      padding-right: 200px;
+    }
+
+    .section {
+      padding: 68px 24px 0;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .section-body {
+      padding-bottom: 68px;
+    }
+
+    .section-eyebrow {
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 7px;
+    }
+
+    .section-title {
+      font-size: clamp(22px, 3.5vw, 32px);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      margin-bottom: 9px;
+      line-height: 1.2;
+      color: #1a1a2e;
+    }
+
+    .section-desc {
+      font-size: 13.5px;
+      color: rgba(26,26,46,0.48);
+      margin-bottom: 34px;
+      font-weight: 300;
+      max-width: 500px;
+    }
+
+    /* ══ WORKS GRID — centered ══ */
+    .works-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 14px;
+      justify-content: center;
+    }
+
+    /* ══ WORK CARD ══ */
+    .work-card {
+      background: var(--card-bg);
+      border-radius: 14px;
+      padding: 22px 20px;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .work-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .work-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 17px;
+      flex-shrink: 0;
+    }
+
+    .icon-blue { background: rgba(59,130,246,0.1); }
+    .icon-orange { background: rgba(255,107,53,0.1); }
+    .icon-green { background: rgba(34,197,94,0.1); }
+    .icon-purple { background: rgba(168,85,247,0.1); }
+    .icon-pink { background: rgba(255,69,107,0.1); }
+    .icon-yellow { background: rgba(255,193,7,0.1); }
+
+    .work-card h3 {
+      font-size: 15px;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      color: #1d1d1f;
+    }
+
+    .work-card > p {
+      font-size: 12.5px;
+      color: #6e6e73;
+      line-height: 1.7;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+
+    .detail-section {
+      border-top: 1px solid #f0f0f5;
+      padding-top: 11px;
+      margin-bottom: 11px;
+    }
+
+    .detail-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #b0b0b8;
+      margin-bottom: 5px;
+    }
+
+    .detail-content {
+      font-size: 12.5px;
+      color: #4a4a52;
+      line-height: 1.6;
+    }
+
+    .formats-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-bottom: 4px;
+    }
+
+    .badge-groups {
+      margin-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .badge-group {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .badge-group-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: #555;
+      margin-right: 2px;
+      white-space: nowrap;
+    }
+    .badge-group-label::after {
+      content: '：';
+    }
+
+    .format-badge {
+      font-size: 11px;
+      color: var(--badge-text);
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-weight: 500;
+    }
+
+    .card-images {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-images img {
+      width: 100%;
+      border-radius: 8px;
+      border: 1px solid #f0f0f5;
+      display: block;
+    }
+
+    .img-caption {
+      font-size: 11.5px;
+      color: #b0b0b8;
+      text-align: center;
+      margin-top: -4px;
+    }
+
+    /* ══ CASE CARD ══ */
+    .case-card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 28px 24px 24px;
+      position: relative;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05), 0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .case-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+    }
+
+    .case-card::before {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, #3b82f6, #a855f7);
+      border-radius: 16px 16px 0 0;
+      margin: -28px -24px 20px;
+      width: calc(100% + 48px);
+    }
+
+    .case-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 5px;
+    }
+
+    .case-card h3 {
+      font-size: 17px;
+      font-weight: 600;
+      color: #1d1d1f;
+      margin-bottom: 8px;
+    }
+
+    .case-card > p {
+      font-size: 13px;
+      color: #6e6e73;
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+
+    .case-metrics {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .metric .val {
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .metric .desc {
+      font-size: 11.5px;
+      color: #b0b0b8;
+    }
+
+    /* ══ DIVIDER ══ */
+    .section-divider {
+      height: 1px;
+      background: rgba(26,26,46,0.07);
+      margin: 0;
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      text-align: center;
+      padding: 60px 24px;
+      border-top: 1px solid rgba(26,26,46,0.07);
+    }
+
+    footer p {
+      font-size: 12px;
+      color: rgba(26,26,46,0.3);
+    }
+
+    footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 1024px) {
+      .sidebar { display: none; }
+      .section-wrap { padding-right: 0; }
+    }
+
+    @media (max-width: 768px) {
+      .section { padding: 52px 16px 0; }
+      .works-grid { grid-template-columns: 1fr; }
+      .contact-row { gap: 14px; }
+    }
+    /* ========== 翻页轮播 ========== */
+    .carousel {
+      margin-top: 12px;
+      position: relative;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #f7f7fa;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+    }
+    .carousel-slide {
+      min-width: 100%;
+      box-sizing: border-box;
+      padding: 6px;
+    }
+    .carousel-slide img {
+      width: 100%;
+      border-radius: 8px;
+      display: block;
+    }
+    .carousel-caption {
+      font-size: 11.5px;
+      color: #999;
+      text-align: center;
+      margin-top: 6px;
+      padding-bottom: 2px;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.45);
+      color: #fff;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+      z-index: 2;
+    }
+    .carousel-btn:hover {
+      background: rgba(0,0,0,0.7);
+    }
+    .carousel-btn.prev { left: 8px; }
+    .carousel-btn.next { right: 8px; }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 6px;
+      padding: 8px 0;
+    }
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #d0d0d5;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+    }
+    .carousel-dot.active {
+      background: #4a6cf7;
+      transform: scale(1.25);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ SIDEBAR ══ -->
+  <nav class="sidebar" id="sidebar">
+    <a class="sidebar-item active" href="#part1">
+      <span class="sidebar-label">用户洞察与竞品调研</span>
+      <span class="sidebar-dot"></span>
+    </a>
+    <a class="sidebar-item" href="#part2">
+      <span class="sidebar-label">转化策略与链路设计</span>
+      <span class="sidebar-dot"></span>
+    </a>
+    <a class="sidebar-item" href="#part3">
+      <span class="sidebar-label">销售赋能与内容中台</span>
+      <span class="sidebar-dot"></span>
+    </a>
+    <a class="sidebar-item" href="#part4">
+      <span class="sidebar-label">数据监控与复盘</span>
+      <span class="sidebar-dot"></span>
+    </a>
+    <a class="sidebar-item" href="#part5">
+      <span class="sidebar-label">创新策略案例</span>
+      <span class="sidebar-dot"></span>
+    </a>
+    <a class="sidebar-item" href="#part6">
+      <span class="sidebar-label">部门协同与流程优化</span>
+      <span class="sidebar-dot"></span>
+    </a>
+  </nav>
+
+  <!-- ══ HEADER ══ -->
+  <header>
+    <div class="header-tag">Portfolio</div>
+    <h1>张夏男 ｜ 策略运营作品集</h1>
+    <p class="header-sub">全链路运营 · 销转策略 · 0 到 1 搭建 · 精细化运营</p>
+    <div class="contact-row">
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012.22 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        178-6521-7547
+      </div>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        forxsin@gmail.com
+      </div>
+      <div class="contact-item">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        微信同号
+      </div>
+    </div>
+    <p class="header-intro">6年互联网教育经验，聚焦策略运营与转化体系搭建。从用户洞察到链路设计，从内容中台到数据复盘，以结果为导向，持续验证与迭代。</p>
+  </header>
+
+  <!-- ══ SECTION 1 ══ -->
+  <div class="section-wrap">
+    <section class="section" id="part1">
+      <div class="section-body">
+        <div class="section-eyebrow">Part 01</div>
+        <h2 class="section-title">用户洞察与竞品调研</h2>
+        <p class="section-desc">通过用户画像、需求挖掘与竞品对比，精准定位机会点，为策略调整提供依据。</p>
+
+        <div class="works-grid">
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-blue">📊</div>
+              <h3>竞品调研与产品分析</h3>
+            </div>
+            <p>「行业同类竞品+用户视角」多维度对比，输出竞品清单、课程对比表、优势提炼与优化建议</p>
+            <div class="detail-section">
+            </div>
+            <div class="carousel" data-carousel>
+              <button class="carousel-btn prev" onclick="carouselPrev(this)">‹</button>
+              <button class="carousel-btn next" onclick="carouselNext(this)">›</button>
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <img src="images/1-前后端课程对比.png" alt="前后端课程对比">
+                  <div class="carousel-caption">前后端课程对比</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="images/2-垂类主推课程对比.png" alt="垂类主推课程对比">
+                  <div class="carousel-caption">垂类主推课程对比</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="images/3-转化节奏对比.png" alt="转化节奏对比">
+                  <div class="carousel-caption">转化节奏对比</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="images/4-打竞品的话术.png" alt="打竞品的话术">
+                  <div class="carousel-caption">打竞品的话术</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="images/5-课程包装对比.png" alt="课程包装对比">
+                  <div class="carousel-caption">课程包装对比</div>
+                </div>
+              </div>
+              <div class="carousel-dots">
+                <button class="carousel-dot active" onclick="carouselGo(this,0)"></button>
+                <button class="carousel-dot" onclick="carouselGo(this,1)"></button>
+                <button class="carousel-dot" onclick="carouselGo(this,2)"></button>
+                <button class="carousel-dot" onclick="carouselGo(this,3)"></button>
+                <button class="carousel-dot" onclick="carouselGo(this,4)"></button>
+              </div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="badge-group-label">分析视角</span>
+                <span class="format-badge">多维对比</span>
+                <span class="format-badge">机会洞察</span>
+                <span class="format-badge">差异化定位</span>
+              </div>
+              <div class="badge-group">
+                <span class="badge-group-label">输出价值</span>
+                <span class="format-badge">优势提炼</span>
+                <span class="format-badge">可执行建议</span>
+                <span class="format-badge">策略反哺</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-purple">👥</div>
+              <h3>用户画像与需求挖掘</h3>
+            </div>
+            <p>构建用户标签体系，依据渠道特性、群体需求、一线反馈等，深挖需求痛点，为策略制定提供精准依据</p>
+            <div class="detail-section">
+            </div>
+            <div class="carousel" data-carousel>
+              <button class="carousel-btn prev" onclick="carouselPrev(this)">‹</button>
+              <button class="carousel-btn next" onclick="carouselNext(this)">›</button>
+              <div class="carousel-track">
+                <div class="carousel-slide">
+                  <img src="images/user/1-用户画像分析.jpg" alt="用户画像分析">
+                  <div class="carousel-caption">用户画像分析</div>
+                </div>
+                <div class="carousel-slide">
+                  <img src="images/user/2-渠道用户特性&针对性话术.jpg" alt="渠道用户特性与针对性话术">
+                  <div class="carousel-caption">渠道用户特性与针对性话术</div>
+                </div>
+              </div>
+              <div class="carousel-dots">
+                <button class="carousel-dot active" onclick="carouselGo(this,0)"></button>
+                <button class="carousel-dot" onclick="carouselGo(this,1)"></button>
+              </div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="format-badge">数据标签</span>
+                <span class="format-badge">需求分层</span>
+                <span class="format-badge">痛点深挖</span>
+                <span class="format-badge">策略锚点</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ SECTION 2 ══ -->
+    <section class="section" id="part2">
+      <div class="section-body">
+        <div class="section-eyebrow">Part 02</div>
+        <h2 class="section-title">转化策略与链路设计</h2>
+        <p class="section-desc">围绕用户决策，设计全周期运营节奏与转化模型，系统提升各环节转化效率。</p>
+
+        <div class="works-grid">
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-orange">🔄</div>
+              <h3>全周期运营沙盘与SOP</h3>
+            </div>
+            <p>设计从进量到转化的全链路运营沙盘与标准化流程，确保策略可执行、可复制</p>
+            <div class="detail-section">
+              <div class="card-images">
+                <img src="images/沙盘.jpg" alt="">
+              </div>
+              <div class="detail-label">SOP 覆盖</div>
+              <div class="detail-content">课前诊断 · 行课期管理 · 转化周执行 · 续费转化 · 营销场域集中关单</div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="format-badge">节点拆解</span>
+                <span class="format-badge">标准化</span>
+                <span class="format-badge">可复制</span>
+                <span class="format-badge">节奏把控</span>
+                <span class="format-badge">逻辑闭环</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-green">💬</div>
+              <h3>社群营销活动策划</h3>
+            </div>
+            <p>规划社群全生命周期动作与SOP，提升用户活跃、到课与转化效率</p>
+            <div class="detail-section">
+              <div class="card-images">
+                <img src="images/社群.jpg" alt="">
+              </div>
+              <div class="detail-label">SOP 覆盖</div>
+              <div class="detail-content">建群话术 · 群公告 · 欢迎语 · 行业加餐 · 报告分析 · 大咖分享 · 学员分享</div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="format-badge">促基础数据</span>
+                <span class="format-badge">氛围营造</span>
+                <span class="format-badge">数据追踪</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ SECTION 3 ══ -->
+    <section class="section" id="part3">
+      <div class="section-body">
+        <div class="section-eyebrow">Part 03</div>
+        <h2 class="section-title">销售赋能与内容中台</h2>
+        <p class="section-desc">让销售有武器，让内容有体系。</p>
+
+        <div class="works-grid">
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-blue">📖</div>
+              <h3>销售手册</h3>
+            </div>
+            <p>输出标准化《销售手册》，覆盖体验课、正式课课程信息及异议处理方案，新人也能快速上手</p>
+            <div class="detail-section">
+              <div class="card-images">
+                <img src="images/销售手册.jpg" alt="">
+              </div>
+              <div class="detail-label">效果数据</div>
+              <div class="detail-content">手册覆盖100%销售团队，新人上手周期缩短至<span style="color:var(--accent);font-weight:600">4天</span></div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="format-badge">赋能</span>
+                <span class="format-badge">标准化</span>
+                <span class="format-badge">提效</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-yellow">🎨</div>
+              <h3>内容中台</h3>
+            </div>
+            <p>搭建标准化物料库，覆盖全流程内容需求，降低沟通成本，保障品牌一致性</p>
+            <div class="detail-section">
+              <div class="card-images">
+                <img src="images/内容中台.jpg" alt="">
+              </div>
+              <div class="detail-label">物料类型</div>
+              <div class="detail-content">海报素材 · 私聊&电联话术 · 专项问题解决</div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="format-badge">标准化物料</span>
+                <span class="format-badge">异议处理</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-pink">✍️</div>
+              <h3>商业化文案与内容营销</h3>
+            </div>
+            <p>具备策划+执行的内容营销能力，符合销售转化需求、用户决策需求</p>
+            <div class="detail-section">
+              <div class="card-images">
+                <img src="images/商业化文案.jpg" alt="">
+              </div>
+            </div>
+            <div class="badge-groups">
+              <div class="badge-group">
+                <span class="format-badge">痛点钩子</span>
+                <span class="format-badge">视觉包装</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ SECTION 4 ══ -->
+    <section class="section" id="part4">
+      <div class="section-body">
+        <div class="section-eyebrow">Part 04</div>
+        <h2 class="section-title">数据监控与复盘</h2>
+        <p class="section-desc">用数据说话，让策略迭代有据可循。</p>
+
+        <div class="case-card reveal">
+          <div class="case-label">转化漏斗监控体系</div>
+          <h3>全链路数据指标体系</h3>
+          <p>覆盖从线索到续费的全链路指标监控，实时追踪转化效率，快速定位流失节点并推动策略迭代。</p>
+
+          <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 18px; margin-bottom: 18px;">
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--accent);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;">前 端</div>
+              <div style="font-size:12px;color:#6e6e73;line-height:2;">增长 · 落地页 · 商务合作 · 漏斗模型 · 私域拓科</div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--accent-purple);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;">核心指标</div>
+              <div style="font-size:12px;color:#6e6e73;line-height:2;">订单数 · GMV · 转化周期 · LTV</div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--accent3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;">过程指标</div>
+              <div style="font-size:12px;color:#6e6e73;line-height:2;">线索 → 邀约 → 完课 → 付费</div>
+            </div>
+            <div>
+              <div style="font-size:10px;font-weight:700;color:var(--accent2);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:7px;">后 端</div>
+              <div style="font-size:12px;color:#6e6e73;line-height:2;">续费率 · 退费率 · 在班率 · 完课率 · 缺课补课率</div>
+            </div>
+          </div>
+
+          <div class="case-metrics">
+            <div class="metric"><div class="val">全链路</div><div class="desc">指标覆盖</div></div>
+            <div class="metric"><div class="val">实时</div><div class="desc">数据监控</div></div>
+            <div class="metric"><div class="val">归因</div><div class="desc">分析驱动</div></div>
+          </div>
+          <div class="card-images">
+            <!-- 在此处插入截图 -->
+          </div>
+        </div>
+
+        <div class="works-grid" style="margin-top:14px;">
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-blue">📈</div>
+              <h3>全链路复盘</h3>
+            </div>
+            <p>直播间数据记录、关键节点分析、单日小结、问题反思、策略优化与转化调整的完整复盘闭环。</p>
+            <div class="detail-section">
+              <div class="detail-label">复盘维度</div>
+              <div class="detail-content">直播间数据 · 关键节点记录 · 问题反思 · 策略优化 · A/B测试对比</div>
+            </div>
+            <div class="card-images">
+              <!-- 在此处插入截图 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ SECTION 5 ══ -->
+    <section class="section" id="part5">
+      <div class="section-body">
+        <div class="section-eyebrow">Part 05</div>
+        <h2 class="section-title">创新策略案例</h2>
+        <p class="section-desc">张夏男的一些创新点，辅助业务向前一步。</p>
+
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; margin-bottom: 14px; justify-content: center;">
+          <div class="case-card reveal">
+            <div class="case-label">创新案例 1</div>
+            <h3>家长会 2.0 模型</h3>
+            <p>重构家长会设计逻辑，从单一宣讲升级为互动式价值传递，直接提升家长参与意愿与课程转化率。</p>
+            <div class="case-metrics">
+              <div class="metric"><div class="val">↑ 翻倍</div><div class="desc">转化率提升</div></div>
+              <div class="metric"><div class="val">A/B</div><div class="desc">测试验证</div></div>
+            </div>
+            <div class="card-images">
+              <img src="images/家长会.jpg" alt="">
+            </div>
+          </div>
+
+          <div class="case-card reveal">
+            <div class="case-label">创新案例 2</div>
+            <h3>讲师讲售一体</h3>
+            <p>打破销售与教学的壁垒，让讲师参与转化环节，用专业建立信任，提升关单效率。</p>
+            <div class="case-metrics">
+              <div class="metric"><div class="val">↑ 信任度</div><div class="desc">关单效率提升</div></div>
+            </div>
+            <div class="card-images">
+              <img src="images/讲师讲售.jpg" alt="">
+            </div>
+          </div>
+
+          <div class="case-card reveal">
+            <div class="case-label">创新案例 3</div>
+            <h3>开课节奏重构</h3>
+            <p>基于数据洞察重新设计开课节奏与节奏节点，提升完课率与续费率。</p>
+            <div class="case-metrics">
+              <div class="metric"><div class="val">↓流失率</div><div class="desc">完课率提升</div></div>
+            </div>
+            <div class="card-images">
+              <img src="images/开课节奏.jpg" alt="">
+            </div>
+          </div>
+        </div>
+
+        <div class="formats-row" style="justify-content:center;">
+          <span class="format-badge">方案摘要</span>
+          <span class="format-badge">PPT截图</span>
+          <span class="format-badge">A/B测试结果</span>
+          <span class="format-badge">数据对比</span>
+        </div>
+      </div>
+    </section>
+
+    <div class="section-divider"></div>
+
+    <!-- ══ SECTION 6 ══ -->
+    <section class="section" id="part6">
+      <div class="section-body">
+        <div class="section-eyebrow">Part 06</div>
+        <h2 class="section-title">部门协同与流程优化</h2>
+        <p class="section-desc">体系化沉淀经验，降低协作成本，提升团队整体效能。</p>
+
+        <div class="works-grid">
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-blue">📚</div>
+              <h3>培训材料与知识传递</h3>
+            </div>
+            <p>将策略与经验转化为培训材料，通过分层培训拉齐团队认知，缩短新人上手周期</p>
+            <div class="detail-section">
+              <div class="detail-label">效果</div>
+              <div class="detail-content">新人上手周期缩短<span style="color:var(--accent);font-weight:600">50%</span>，团队转化率方差缩小<span style="color:var(--accent);font-weight:600">30%</span></div>
+            </div>
+            <div class="formats-row">
+              <span class="format-badge">知识卡片</span>
+              <span class="format-badge">手册</span>
+              <span class="format-badge">培训照片</span>
+            </div>
+            <div class="card-images">
+              <!-- 在此处插入截图 -->
+            </div>
+          </div>
+
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-green">⚡</div>
+              <h3>流程标准化与跨部门协同</h3>
+            </div>
+            <p>跨部门协作紧密，确保策略高效落地，推动业务增长</p>
+            <div class="detail-section">
+              <div class="detail-label">效果</div>
+              <div class="detail-content">咨询量显著下降，异常响应效率提升</div>
+            </div>
+            <div class="formats-row">
+              <span class="format-badge">规则文档</span>
+              <span class="format-badge">数据对比</span>
+            </div>
+            <div class="card-images">
+              <!-- 在此处插入截图 -->
+            </div>
+          </div>
+
+          <div class="work-card reveal">
+            <div class="card-header">
+              <div class="work-icon icon-purple">🎯</div>
+              <h3>一线实战与洞察</h3>
+            </div>
+            <p>亲自担任班主任，深入一线观察用户行为，输出SOP优化清单与洞察报告。</p>
+            <div class="detail-section">
+              <div class="detail-label">呈现形式</div>
+              <div class="detail-content">笔记照片 + 优化前后对比 + 效率提升数据</div>
+            </div>
+            <div class="card-images">
+              <!-- 在此处插入截图 -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div><!-- /section-wrap -->
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <p>张夏男 · 策略运营作品集 &nbsp;·&nbsp; <a href="mailto:forxsin@gmail.com">forxsin@gmail.com</a> &nbsp;·&nbsp; 178-6521-7547</p>
+  </footer>
+
+  <script>
+    /* ══ Sidebar Scroll Spy ══ */
+    const sections = document.querySelectorAll('section[id]');
+    const sidebarItems = document.querySelectorAll('.sidebar-item');
+
+    const spy = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          sidebarItems.forEach(item => item.classList.remove('active'));
+          const active = document.querySelector(`.sidebar-item[href="#${entry.target.id}"]`);
+          if (active) active.classList.add('active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -55% 0px' });
+
+    sections.forEach(s => spy.observe(s));
+
+    /* ══ Scroll Reveal ══ */
+    const reveals = document.querySelectorAll('.reveal');
+    const revealObs = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          setTimeout(() => entry.target.classList.add('visible'), i * 60);
+          revealObs.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.05 });
+
+    reveals.forEach(el => revealObs.observe(el));
+
+    /* ========== 翻页轮播 ========== */
+    function getCarouselData(el) {
+      const carousel = el.closest('.carousel');
+      const track = carousel.querySelector('.carousel-track');
+      const slides = track.querySelectorAll('.carousel-slide');
+      const dots = carousel.querySelectorAll('.carousel-dot');
+      let idx = Array.from(dots).findIndex(d => d.classList.contains('active'));
+      if (idx < 0) idx = 0;
+      return { carousel, track, slides, dots, idx };
+    }
+    function updateCarousel(data) {
+      data.track.style.transform = `translateX(-${data.idx * 100}%)`;
+      data.dots.forEach((d, i) => d.classList.toggle('active', i === data.idx));
+    }
+    function carouselPrev(btn) {
+      const d = getCarouselData(btn);
+      d.idx = (d.idx - 1 + d.slides.length) % d.slides.length;
+      updateCarousel(d);
+    }
+    function carouselNext(btn) {
+      const d = getCarouselData(btn);
+      d.idx = (d.idx + 1) % d.slides.length;
+      updateCarousel(d);
+    }
+    function carouselGo(dot, i) {
+      const d = getCarouselData(dot);
+      d.idx = i;
+      updateCarousel(d);
+    }
+  </script>
+</body>
+</html>
